@@ -1,6 +1,11 @@
 {
   "name": "elm-tailwind-css",
-  "version": "0.1.0",
+  "description": "Use Tailwind CSS with Elm",
+  "version": "0.1.1",
+  "keywords": [ "tailwind", "elm", "purgecss", "postcss", "minify" ],
+  "homepage": "https://github.com/icidasset/elm-tailwind-css",
+  "license": "MIT",
+  "author": "Steven Vandevelde <icid.asset@gmail.com>",
   "type": "module",
   "engines": {
     "node": ">=14"
