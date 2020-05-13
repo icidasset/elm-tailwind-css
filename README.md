@@ -1,4 +1,4 @@
-__Use Tailwind CSS with Elm.__
+🌳 __Use Tailwind CSS with Elm.__
 
 _Generates an Elm module with functions for all your CSS selectors  
 and the ones from Tailwind. For the production build it filters  
