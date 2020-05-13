@@ -1,8 +1,11 @@
 __Use Tailwind CSS with Elm.__
 
-_Generates an Elm module with functions for all your CSS selectors and the ones from Tailwind. For the production build it filters out all the unused selectors and minifies the css file._
+_Generates an Elm module with functions for all your CSS selectors  
+and the ones from Tailwind. For the production build it filters  
+out all the unused selectors and minifies the css file._
 
-In other words, pretty much a CLI for [monty5811/postcss-elm-tailwind](https://github.com/monty5811/postcss-elm-tailwind) and [FullHuman/purgecss](https://github.com/FullHuman/purgecss), plus CSS minifying.
+In other words, pretty much a CLI for [monty5811/postcss-elm-tailwind](https://github.com/monty5811/postcss-elm-tailwind)  
+and [FullHuman/purgecss](https://github.com/FullHuman/purgecss), plus CSS minifying.
 
 ## Usage
 
