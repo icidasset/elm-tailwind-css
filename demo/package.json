@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=14"
+  },
+  "devDependencies": {
+    "elm-tailwind-css": "file:../"
+  }
+}
