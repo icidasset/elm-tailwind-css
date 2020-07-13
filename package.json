@@ -1,8 +1,14 @@
 {
   "name": "elm-tailwind-css",
   "description": "Use Tailwind CSS with Elm",
-  "version": "0.1.1",
-  "keywords": [ "tailwind", "elm", "purgecss", "postcss", "minify" ],
+  "version": "0.2.0",
+  "keywords": [
+    "tailwind",
+    "elm",
+    "purgecss",
+    "postcss",
+    "minify"
+  ],
   "homepage": "https://github.com/icidasset/elm-tailwind-css",
   "license": "MIT",
   "author": "Steven Vandevelde <icid.asset@gmail.com>",
@@ -14,12 +20,12 @@
     "etc": "cli.js"
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "^2.2.0",
-    "autoprefixer": "^9.7.6",
+    "@fullhuman/postcss-purgecss": "^2.3.0",
+    "autoprefixer": "^9.8.5",
     "meow": "^7.0.1",
-    "postcss": "^7.0.30",
+    "postcss": "^7.0.32",
     "postcss-csso": "^4.0.0",
-    "postcss-elm-tailwind": "^0.9.0",
+    "postcss-elm-tailwind": "^0.10.0",
     "tailwindcss": "^1.4.6"
   }
 }

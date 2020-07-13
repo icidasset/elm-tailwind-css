@@ -16,5 +16,7 @@ main =
 
 view _ =
     Html.div
-        [ T.dark__bg_black ]
+        [ T.dark__bg_black
+        , T.translate_x_1over2
+        ]
         []

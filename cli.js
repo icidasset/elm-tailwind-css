@@ -125,8 +125,15 @@ const flow = maybeTailwindConfig => [
 
   ? purgecss({
     content: cli.flags.purgeContent,
-    defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
-    whitelist: cli.flags.purgeWhitelist
+    whitelist: cli.flags.purgeWhitelist,
+
+    // Taken from Tailwind src
+    // https://github.com/tailwindcss/tailwindcss/blob/61ab9e32a353a47cbc36df87674702a0a622fa96/src/lib/purgeUnusedStyles.js#L84
+    defaultExtractor: content => {
+      const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
+      const innerMatches = content.match(/[^<>"'`\s.(){}[\]#=%]*[^<>"'`\s.(){}[\]#=%:]/g) || []
+      return broadMatches.concat(innerMatches)
+    }
   })
 
   : elmTailwind({
