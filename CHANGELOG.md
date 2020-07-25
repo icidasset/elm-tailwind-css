@@ -1,3 +1,8 @@
+### 0.4.1
+
+Temporarily use fork of `postcss-elm-tailwind` that removes the `:not()` pseudo classes.
+
+
 ### 0.4.0
 
 - Add ability to use additional PostCSS plugins
