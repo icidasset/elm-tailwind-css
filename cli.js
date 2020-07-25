@@ -12,7 +12,7 @@ import postcss from "postcss"
 import purgecss from "@fullhuman/postcss-purgecss"
 import tailwind from "tailwindcss"
 
-
+const cwd = path.resolve(".")
 const meow = createRequire(import.meta.url)("meow")
 const isProduction = (process.env.NODE_ENV === "production")
 
@@ -45,6 +45,14 @@ const cli = meow(`
 
       * Only when used with NODE_ENV=production
 
+      ⚗️  PostCSS Options
+
+      https://postcss.org/
+      You can add these flags multiple times:
+
+      --post-plugin-before  Name of a plugin to set up before the tailwindcss plugin
+      --post-plugin-after   Name of a plugin to set up after Tailwind and before auto-prefixer
+
     Examples
       $ etc src/stylesheet.css
           --config tailwind.config.js
@@ -68,13 +76,20 @@ const cli = meow(`
     },
     elmPath: {
       type: "string",
-      alias: "e",
-      isRequired: _ => !isProduction
+      alias: "e"
     },
     output: {
       type: "string",
       alias: "o",
       default: "build/stylesheet.css"
+    },
+    postPluginAfter: {
+      type: "string",
+      isMultiple: true
+    },
+    postPluginBefore: {
+      type: "string",
+      isMultiple: true
     },
     purgeContent: {
       type: "string",
@@ -115,32 +130,55 @@ const output = cli.flags.output
 // FLOW
 
 
-const flow = maybeTailwindConfig => [
+const flow = async maybeTailwindConfig => [
 
+  // Plugins <before>
+  ...(await loadPlugins(cli.flags.postPluginBefore)),
+
+  // Tailwind
   tailwind({ ...(maybeTailwindConfig || {}), purge: false }),
 
   // Generate Elm module based on our Tailwind configuration
   // OR: make CSS as small as possible by removing style rules we don't need
-  isProduction
+  ...isProduction
 
-  ? purgecss({
-    content: cli.flags.purgeContent,
-    whitelist: cli.flags.purgeWhitelist,
+  ? [
 
-    // Taken from Tailwind src
-    // https://github.com/tailwindcss/tailwindcss/blob/61ab9e32a353a47cbc36df87674702a0a622fa96/src/lib/purgeUnusedStyles.js#L84
-    defaultExtractor: content => {
-      const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
-      const innerMatches = content.match(/[^<>"'`\s.(){}[\]#=%]*[^<>"'`\s.(){}[\]#=%:]/g) || []
-      return broadMatches.concat(innerMatches)
-    }
-  })
+    purgecss({
+      content: cli.flags.purgeContent,
+      whitelist: cli.flags.purgeWhitelist,
 
-  : elmTailwind({
-    elmFile: cli.flags.elmPath,
-    elmModuleName: cli.flags.elmPath.split("/").slice(-1)[0].replace(/\.\w+$/, ""),
-    nameStyle: cli.flags.elmNameStyle
-  }),
+      // Taken from Tailwind src
+      // https://github.com/tailwindcss/tailwindcss/blob/61ab9e32a353a47cbc36df87674702a0a622fa96/src/lib/purgeUnusedStyles.js#L84
+      defaultExtractor: content => {
+        const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
+        const innerMatches = content.match(/[^<>"'`\s.(){}[\]#=%]*[^<>"'`\s.(){}[\]#=%:]/g) || []
+        return broadMatches.concat(innerMatches)
+      }
+    })
+
+  ]
+
+  : (
+
+    cli.flags.elmPath
+
+    ? [
+
+      elmTailwind({
+        elmFile: cli.flags.elmPath,
+        elmModuleName: cli.flags.elmPath.split("/").slice(-1)[0].replace(/\.\w+$/, ""),
+        nameStyle: cli.flags.elmNameStyle
+      })
+
+    ]
+
+    : []
+
+  ),
+
+  // Plugins <after>
+  ...(await loadPlugins(cli.flags.postPluginAfter)),
 
   // Add vendor prefixes where necessary
   autoprefixer,
@@ -149,6 +187,13 @@ const flow = maybeTailwindConfig => [
   ...(isProduction ? [ csso({ comments: false }) ] : [])
 
 ]
+
+
+function loadPlugins(list) {
+  return Promise.all((list || []).map(
+    async a => await createRequire(`${cwd}/node_modules`)(a)
+  ))
+}
 
 
 
@@ -162,7 +207,7 @@ tailwindConfigPromise.then(async maybeTailwindConfig => {
   )
 
   const css = fs.readFileSync(input)
-  const cfg = flow(maybeTailwindConfig)
+  const cfg = await flow(maybeTailwindConfig)
   const res = await postcss(cfg).process(css, { from: input, to: output })
 
   fs.writeFileSync(output, res.css)

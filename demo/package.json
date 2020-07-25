@@ -6,5 +6,9 @@
   },
   "devDependencies": {
     "elm-tailwind-css": "file:../"
+  },
+  "dependencies": {
+    "postcss-import": "^12.0.1",
+    "postcss-nesting": "^7.0.1"
   }
 }
