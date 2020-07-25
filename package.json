@@ -1,7 +1,7 @@
 {
   "name": "elm-tailwind-css",
   "description": "Use Tailwind CSS with Elm",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "keywords": [
     "tailwind",
     "elm",
@@ -26,6 +26,6 @@
     "postcss": "^7.0.32",
     "postcss-csso": "^4.0.0",
     "postcss-elm-tailwind": "^0.10.0",
-    "tailwindcss": "^1.4.6"
+    "tailwindcss": "^1.5.2"
   }
 }
