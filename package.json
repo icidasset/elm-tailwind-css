@@ -1,7 +1,7 @@
 {
   "name": "elm-tailwind-css",
   "description": "Use Tailwind CSS with Elm",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "keywords": [
     "tailwind",
     "elm",

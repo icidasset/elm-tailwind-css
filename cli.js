@@ -32,8 +32,9 @@ const cli = meow(`
 
       https://github.com/monty5811/postcss-elm-tailwind
 
-      --elm-path, -e        [REQUIRED] Path for the generated Elm Tailwind file
+      --elm-module, -m      Module name for the generated Elm file (default is file name)
       --elm-name-style, -n  Naming style for Elm functions, "snake" (default) or "camel"
+      --elm-path, -e        Path for the generated Elm Tailwind file
 
       🚽  PurgeCSS Options
 
@@ -68,6 +69,10 @@ const cli = meow(`
     config: {
       type: "string",
       alias: "c"
+    },
+    elmModuleName: {
+      type: "string",
+      alias: "m"
     },
     elmNameStyle: {
       type: "string",
@@ -127,6 +132,13 @@ const output = cli.flags.output
 
 
 
+// CHECK INPUT
+
+
+if (!input) cli.showHelp()
+
+
+
 // FLOW
 
 
@@ -167,7 +179,10 @@ const flow = async maybeTailwindConfig => [
 
       elmTailwind({
         elmFile: cli.flags.elmPath,
-        elmModuleName: cli.flags.elmPath.split("/").slice(-1)[0].replace(/\.\w+$/, ""),
+        elmModuleName: (
+          cli.flags.elmModule ||
+          cli.flags.elmPath.split("/").slice(-1)[0].replace(/\.\w+$/, "")
+        ),
         nameStyle: cli.flags.elmNameStyle
       })
 

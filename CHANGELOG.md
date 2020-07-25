@@ -1,3 +1,9 @@
+### 0.4.2
+
+- Adds ability to choose the Elm module name
+- Show help when given no parameters
+
+
 ### 0.4.1
 
 Temporarily use fork of `postcss-elm-tailwind` that removes the `:not()` pseudo classes.
