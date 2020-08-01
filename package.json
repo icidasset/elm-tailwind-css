@@ -1,7 +1,7 @@
 {
   "name": "elm-tailwind-css",
   "description": "Use Tailwind CSS with Elm",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "keywords": [
     "tailwind",
     "elm",
@@ -26,7 +26,7 @@
     "meow": "^7.0.1",
     "postcss": "^7.0.32",
     "postcss-csso": "^4.0.0",
-    "postcss-elm-tailwind": "icidasset/postcss-elm-tailwind#b7d7a24aa63d5e1aa634942a45e735442174dec0",
+    "postcss-elm-tailwind": "icidasset/postcss-elm-tailwind#b88835786d9b0aa48a88d83fd8c13df89bbd60a0",
     "tailwindcss": "^1.6.0"
   }
 }

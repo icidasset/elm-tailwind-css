@@ -1,3 +1,13 @@
+### 0.4.4
+
+- Fix incorrect dependency commit hash
+
+
+### 0.4.3
+
+- Update Tailwind
+
+
 ### 0.4.2
 
 - Adds ability to choose the Elm module name
