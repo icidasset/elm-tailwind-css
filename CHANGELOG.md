@@ -1,11 +1,16 @@
+### 0.4.5
+
+Remove `--no-warning` in binary.
+
+
 ### 0.4.4
 
-- Fix incorrect dependency commit hash
+Fix incorrect dependency commit hash.
 
 
 ### 0.4.3
 
-- Update Tailwind
+Update Tailwind.
 
 
 ### 0.4.2
