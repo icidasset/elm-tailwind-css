@@ -4,11 +4,10 @@
   "engines": {
     "node": ">=14"
   },
-  "devDependencies": {
-    "elm-tailwind-css": "file:../"
-  },
   "dependencies": {
+    "elm-tailwind-css": "file:../",
     "postcss-import": "^12.0.1",
-    "postcss-nesting": "^7.0.1"
+    "postcss-nesting": "^7.0.1",
+    "tailwindcss": "^1.6.0"
   }
 }

@@ -10,11 +10,11 @@ import path from "path"
 import process from "process"
 import postcss from "postcss"
 import purgecss from "@fullhuman/postcss-purgecss"
-import tailwind from "tailwindcss"
 
 const cwd = path.resolve(".")
-const meow = createRequire(import.meta.url)("meow")
 const isProduction = (process.env.NODE_ENV === "production")
+const meow = createRequire(import.meta.url)("meow")
+const requireInProject = createRequire(path.join(cwd, "node_modules"))
 
 
 // ⌨️
@@ -148,7 +148,7 @@ const flow = async maybeTailwindConfig => [
   ...(await loadPlugins(cli.flags.postPluginBefore)),
 
   // Tailwind
-  tailwind({ ...(maybeTailwindConfig || {}), purge: false }),
+  (await tailwind())({ ...(maybeTailwindConfig || {}), purge: false }),
 
   // Generate Elm module based on our Tailwind configuration
   // OR: make CSS as small as possible by removing style rules we don't need
@@ -181,7 +181,7 @@ const flow = async maybeTailwindConfig => [
         elmFile: cli.flags.elmPath,
         elmModuleName: (
           cli.flags.elmModule ||
-          cli.flags.elmPath.split("/").slice(-1)[0].replace(/\.\w+$/, "")
+          cli.flags.elmPath.split(path.sep).slice(-1)[0].replace(/\.\w+$/, "")
         ),
         nameStyle: cli.flags.elmNameStyle
       })
@@ -206,8 +206,13 @@ const flow = async maybeTailwindConfig => [
 
 function loadPlugins(list) {
   return Promise.all((list || []).map(
-    async a => await createRequire(`${cwd}/node_modules`)(a)
+    async a => await requireInProject(a)
   ))
+}
+
+
+function tailwind() {
+  return requireInProject("tailwindcss")
 }
 
 
@@ -217,7 +222,7 @@ function loadPlugins(list) {
 
 tailwindConfigPromise.then(async maybeTailwindConfig => {
   fs.mkdirSync(
-    output.split("/").slice(0, -1).join("/"),
+    output.split(path.sep).slice(0, -1).join(path.sep),
     { recursive: true }
   )
 
