@@ -41,10 +41,10 @@ const cli = meow(`
       https://purgecss.com/CLI.html
       You can add these flags multiple times:
 
-      --purge-content       [REQUIRED*] Glob that should be analyzed by PurgeCSS
+      --purge-content       Glob that should be analyzed by PurgeCSS
       --purge-whitelist     CSS selector not to be removed by PurgeCSS
 
-      * Only when used with NODE_ENV=production
+      Note: PurgeCSS only runs in the production environment (see example below).
 
       ⚗️  PostCSS Options
 
@@ -150,8 +150,7 @@ const flow = async maybeTailwindConfig => [
   // Tailwind
   (await tailwind())({ ...(maybeTailwindConfig || {}), purge: false }),
 
-  // Generate Elm module based on our Tailwind configuration
-  // OR: make CSS as small as possible by removing style rules we don't need
+  // Make CSS as small as possible by removing style rules we don't need
   ...isProduction
 
   ? [
@@ -171,26 +170,29 @@ const flow = async maybeTailwindConfig => [
 
   ]
 
-  : (
+  :
 
-    cli.flags.elmPath
+  [],
 
-    ? [
+  // Generate Elm module if needed
+  ...cli.flags.elmPath
 
-      elmTailwind({
-        elmFile: cli.flags.elmPath,
-        elmModuleName: (
-          cli.flags.elmModule ||
-          cli.flags.elmPath.split(path.sep).slice(-1)[0].replace(/\.\w+$/, "")
-        ),
-        nameStyle: cli.flags.elmNameStyle
-      })
+  ? [
 
-    ]
+    elmTailwind({
+      elmFile: cli.flags.elmPath,
+      elmModuleName: (
+        cli.flags.elmModule ||
+        cli.flags.elmPath.split(path.sep).slice(-1)[0].replace(/\.\w+$/, "")
+      ),
+      nameStyle: cli.flags.elmNameStyle
+    })
 
-    : []
+  ]
 
-  ),
+  :
+
+  [],
 
   // Plugins <after>
   ...(await loadPlugins(cli.flags.postPluginAfter)),

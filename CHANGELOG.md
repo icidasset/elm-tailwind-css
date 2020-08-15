@@ -1,3 +1,9 @@
+### 0.5.0
+
+- Allow to building Elm module in production mode
+- Don't mark `purge-content` options as required
+
+
 ### 0.4.5
 
 Remove `--no-warning` in binary.
