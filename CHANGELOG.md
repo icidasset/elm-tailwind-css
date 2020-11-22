@@ -1,3 +1,13 @@
+### 0.4.7
+
+Remove node engine requirement.
+
+
+### 0.4.6
+
+Remove tailwind dependency, use tailwind from project.
+
+
 ### 0.4.5
 
 Remove `--no-warning` in binary.

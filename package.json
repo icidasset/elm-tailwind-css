@@ -1,7 +1,7 @@
 {
   "name": "elm-tailwind-css",
   "description": "Use Tailwind CSS with Elm",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "keywords": [
     "tailwind",
     "elm",
@@ -14,9 +14,6 @@
   "license": "MIT",
   "author": "Steven Vandevelde <icid.asset@gmail.com>",
   "type": "module",
-  "engines": {
-    "node": ">=14"
-  },
   "bin": {
     "etc": "cli.js"
   },
