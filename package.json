@@ -1,7 +1,7 @@
 {
   "name": "elm-tailwind-css",
   "description": "Use Tailwind CSS with Elm",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "keywords": [
     "tailwind",
     "elm",
@@ -18,7 +18,7 @@
     "etc": "cli.js"
   },
   "peerDependencies": {
-    "tailwindcss": "1.x"
+    "tailwindcss": ">= 0.0"
   },
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^2.3.0",

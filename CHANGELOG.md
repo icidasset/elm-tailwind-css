@@ -1,3 +1,8 @@
+### 0.4.8
+
+Allow every version of Tailwind.
+
+
 ### 0.4.7
 
 Remove node engine requirement.
