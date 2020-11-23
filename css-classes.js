@@ -12,15 +12,10 @@ const plugin = async (flags, root, result) => {
   const functions = []
   const lookup = {}
 
-  let lastCls
+  const processSelector = (selector, rule) => {
+    if (!selector.startsWith(".")) return
 
-  root.walkRules(rule => {
-    if (!rule.selector.startsWith(".")) return;
-    if (rule.selector.includes(" ")) return;
-
-    const cls = rule
-      .selector
-      .split(",")[0]
+    const cls = selector
       .replace(/^\./, "")
       .replace(/\\\./g, ".")
       .replace(/\s?>\s?.*/, "")
@@ -34,9 +29,6 @@ const plugin = async (flags, root, result) => {
       .replace(/\\([/])/g, "\\\\$1")
       .replace(/\\([:])/g, "$1")
 
-    if (cls === lastCls) return;
-    lastCls = cls
-
     const elmVariable = cls
       .replace(/:/g, "__")
       .replace(/__-/g, "__neg_")
@@ -49,6 +41,8 @@ const plugin = async (flags, root, result) => {
       ? elmVariable.replace(/(_+\w)/g, g => g.replace(/_/g, "").toUpperCase())
       : elmVariable
 
+    if (lookup[elmVarWithProperCase]) return
+
     const css = rule
       .toString()
       .replace(/\s+/g, " ")
@@ -58,11 +52,16 @@ const plugin = async (flags, root, result) => {
       `{-| This represents the \`.${cls}\` class.\n` +
       `\n    ${css}` +
       `\n-}\n` +
-      `${elmVariable} : Html.Attribute msg\n` +
-      `${elmVariable} = A.class "${cls}"\n`
+      `${elmVarWithProperCase} : Html.Attribute msg\n` +
+      `${elmVarWithProperCase} = A.class "${cls}"\n`
     )
 
-    lookup[elmVariable] = cls
+    lookup[elmVarWithProperCase] = cls
+  }
+
+  root.walkRules(rule => {
+    [].concat(...rule.selector.split(",").map(a => a.split(" ")))
+      .forEach(s => processSelector(s, rule))
   })
 
   const tmpDir = `./elm-stuff/elm-tailwind-css/${flags.elmModule}`
