@@ -1,3 +1,9 @@
+### 1.0.0
+
+Use custom PostCSS plugin to generate the Elm file.
+This will only generate the Elm files if there are changes.
+
+
 ### 0.4.8
 
 Allow every version of Tailwind.

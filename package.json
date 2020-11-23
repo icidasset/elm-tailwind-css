@@ -1,7 +1,7 @@
 {
   "name": "elm-tailwind-css",
   "description": "Use Tailwind CSS with Elm",
-  "version": "0.4.8",
+  "version": "1.0.0",
   "keywords": [
     "tailwind",
     "elm",
@@ -21,11 +21,12 @@
     "tailwindcss": ">= 0.0"
   },
   "dependencies": {
-    "@fullhuman/postcss-purgecss": "^2.3.0",
-    "autoprefixer": "^9.8.6",
-    "meow": "^7.0.1",
-    "postcss": "^7.0.32",
-    "postcss-csso": "^4.0.0",
-    "postcss-elm-tailwind": "icidasset/postcss-elm-tailwind#b88835786d9b0aa48a88d83fd8c13df89bbd60a0"
+    "@fullhuman/postcss-purgecss": "^3.0",
+    "autoprefixer": ">= 9.0",
+    "fast-stable-stringify": "^1.0.0",
+    "hash-wasm": "^4.4.1",
+    "meow": "^8.0",
+    "postcss": "^8.0",
+    "postcss-csso": "^5.0"
   }
 }

@@ -3,9 +3,9 @@
 
 import { createRequire } from "module"
 import autoprefixer from "autoprefixer"
+import cssClasses from "./css-classes.js"
 import csso from "postcss-csso"
 import fs from "fs"
-import elmTailwind from "postcss-elm-tailwind"
 import path from "path"
 import process from "process"
 import postcss from "postcss"
@@ -99,7 +99,7 @@ const cli = meow(`
     purgeContent: {
       type: "string",
       isMultiple: true,
-      isRequired: _ => isProduction
+      isRequired: isProduction
     },
     purgeWhitelist: {
       type: "string",
@@ -177,13 +177,12 @@ const flow = async maybeTailwindConfig => [
 
     ? [
 
-      elmTailwind({
-        elmFile: cli.flags.elmPath,
-        elmModuleName: (
+      cssClasses({
+        ...cli.flags,
+        elmModule: (
           cli.flags.elmModule ||
           cli.flags.elmPath.split(path.sep).slice(-1)[0].replace(/\.\w+$/, "")
-        ),
-        nameStyle: cli.flags.elmNameStyle
+        )
       })
 
     ]
