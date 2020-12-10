@@ -142,9 +142,6 @@ if (!input) cli.showHelp()
 // FLOW
 
 
-console.log(isProduction)
-
-
 const flow = async maybeTailwindConfig => [
 
   // Plugins <before>
