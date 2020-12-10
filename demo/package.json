@@ -6,8 +6,9 @@
   },
   "dependencies": {
     "elm-tailwind-css": "file:../",
-    "postcss-import": "^12.0.1",
+    "postcss": "^8.2.1",
+    "postcss-import": "^13.0.0",
     "postcss-nesting": "^7.0.1",
-    "tailwindcss": "^1.6.0"
+    "tailwindcss": "2.x"
   }
 }

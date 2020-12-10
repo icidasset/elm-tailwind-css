@@ -4,7 +4,7 @@
 import { createRequire } from "module"
 import autoprefixer from "autoprefixer"
 import cssClasses from "./css-classes.js"
-import csso from "postcss-csso"
+import cssnano from "cssnano"
 import fs from "fs"
 import path from "path"
 import process from "process"
@@ -42,7 +42,7 @@ const cli = meow(`
       You can add these flags multiple times:
 
       --purge-content       [REQUIRED*] Glob that should be analyzed by PurgeCSS
-      --purge-whitelist     CSS selector not to be removed by PurgeCSS
+      --purge-safelist      CSS selector not to be removed by PurgeCSS
 
       * Only when used with NODE_ENV=production
 
@@ -101,7 +101,7 @@ const cli = meow(`
       isMultiple: true,
       isRequired: isProduction
     },
-    purgeWhitelist: {
+    purgeSafelist: {
       type: "string",
       isMultiple: true
     }
@@ -142,6 +142,9 @@ if (!input) cli.showHelp()
 // FLOW
 
 
+console.log(isProduction)
+
+
 const flow = async maybeTailwindConfig => [
 
   // Plugins <before>
@@ -157,15 +160,16 @@ const flow = async maybeTailwindConfig => [
   ? [
 
     purgecss({
-      content: cli.flags.purgeContent,
-      whitelist: cli.flags.purgeWhitelist,
+      content: [...cli.flags.purgeContent],
+      safelist: [...cli.flags.purgeSafelist],
 
       // Taken from Tailwind src
       // https://github.com/tailwindcss/tailwindcss/blob/61ab9e32a353a47cbc36df87674702a0a622fa96/src/lib/purgeUnusedStyles.js#L84
       defaultExtractor: content => {
         const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || []
+        const broadMatchesWithoutTrailingSlash = broadMatches.map(m => m.replace(/\\+$/, ""))
         const innerMatches = content.match(/[^<>"'`\s.(){}[\]#=%]*[^<>"'`\s.(){}[\]#=%:]/g) || []
-        return broadMatches.concat(innerMatches)
+        return broadMatches.concat(broadMatchesWithoutTrailingSlash).concat(innerMatches)
       }
     })
 
@@ -198,7 +202,21 @@ const flow = async maybeTailwindConfig => [
   autoprefixer,
 
   // Minify CSS if needed
-  ...(isProduction ? [ csso({ comments: false }) ] : [])
+  ...(
+
+    isProduction
+
+    ? [ cssnano({
+          preset: [
+            "default",
+            { discardComments: { removeAll: true }}
+          ]
+        })
+      ]
+
+    : []
+
+  )
 
 ]
 

@@ -1,3 +1,10 @@
+### 1.1.0
+
+- Tailwind v2 support
+- whitelist → safelist
+- replace `csso` with `cssnano`
+
+
 ### 1.0.0
 
 Use custom PostCSS plugin to generate the Elm file.

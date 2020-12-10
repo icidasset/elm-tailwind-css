@@ -28,6 +28,8 @@ const plugin = async (flags, root, result) => {
       .replace(/\\\//g, "/")
       .replace(/\\([/])/g, "\\\\$1")
       .replace(/\\([:])/g, "$1")
+      .replace(/(^\s+)|(\s+$)/g, "")
+      .replace(/^\\32/, "")
 
     const elmVariable = cls
       .replace(/:/g, "__")
